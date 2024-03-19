@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SubmissionAwalFundamental</string>
+    <string name="hint">Masukkan nama user</string>
 </resources>
