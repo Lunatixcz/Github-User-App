@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.databinding.ItemUserBinding
 
@@ -23,13 +21,8 @@ class SearchAdapter : ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CA
     class MyViewHolder (val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: ItemsItem){
             binding.textUsername.text = "${user.login}"
-            Glide.with(itemView)
-                .load("${user.avatarUrl}")
-                .apply(
-                    RequestOptions()
-                        .circleCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache both original & resized image
-                )
+            Glide.with(itemView.context)
+                .load(user.avatarUrl)
                 .into(binding.imageProfile)
         }
     }
