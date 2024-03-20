@@ -35,8 +35,20 @@ class MainActivity : AppCompatActivity() {
         binding.rvUsers.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvUsers.addItemDecoration(itemDecoration)
+        findUsers("q")
 
-        findUsers()
+        with(binding) {
+            searchView.setupWithSearchBar(searchBar)
+            searchView
+                .editText
+                .setOnEditorActionListener { textView, actionId, event ->
+                    binding.searchBar.setText(binding.searchView.text)
+                    searchView.hide()
+                    val searchedUsername = searchView.text.toString()
+                    findUsers(searchedUsername)
+                    false
+                }
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -45,9 +57,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun findUsers() {
+    private fun findUsers(username: String) {
         showLoading(true)
-        val client = ApiConfig.getApiService().getUser("niko")
+        val client = ApiConfig.getApiService().getUser(username)
         client.enqueue(object : Callback<SearchResponses> {
             override fun onResponse(
                 call: Call<SearchResponses>,
