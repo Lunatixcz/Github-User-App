@@ -17,9 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userAdapter: SearchAdapter
     private val mainViewModel by viewModels<MainViewModel>()
 
-    companion object{
-        private const val TAG = "MainActivity"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,7 +34,6 @@ class MainActivity : AppCompatActivity() {
                 .setOnEditorActionListener { textView, actionId, event ->
                     binding.searchBar.setText(binding.searchView.text)
                     searchView.hide()
-                    val searchedUsername = searchView.text.toString()
                     val query = searchView.text.toString()
                     mainViewModel.searchUsers(query)
                     false

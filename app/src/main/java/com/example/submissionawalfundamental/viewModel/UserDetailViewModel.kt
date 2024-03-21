@@ -17,15 +17,20 @@ class UserDetailViewModel : ViewModel() {
     private val _username = MutableLiveData<String?>()
     val username: LiveData<String?> = _username
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     val errorMessage: MutableLiveData<String> = MutableLiveData()
 
     fun findDetail(username: String){
+        _isLoading.value = true
         val client = ApiConfig.getApiService().getDetailUser(username)
         client.enqueue(object : Callback<DetailUserResponse> {
             override fun onResponse(
                 call: Call<DetailUserResponse>,
                 response: Response<DetailUserResponse>
             ) {
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
@@ -36,6 +41,7 @@ class UserDetailViewModel : ViewModel() {
                 }
             }
             override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
+                _isLoading.value = false
                 errorMessage.value = "Failed to find detail"
             }
         })

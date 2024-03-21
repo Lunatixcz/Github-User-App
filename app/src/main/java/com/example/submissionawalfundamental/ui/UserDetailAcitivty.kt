@@ -1,6 +1,7 @@
 package com.example.submissionawalfundamental.ui
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -52,8 +53,11 @@ class UserDetailAcitivty : AppCompatActivity() {
                     bindUser(detail)
                 }
             }
+            userDetailViewModel.isLoading.observe(this) {
+                showLoading(it)
+            }
+
             userDetailViewModel.errorMessage.observe(this) { message ->
-                // Display the error message to the user, e.g., using a Toast or Snackbar
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         } else {
@@ -69,5 +73,9 @@ class UserDetailAcitivty : AppCompatActivity() {
         binding.tvUsername.text = detail.login
         binding.tvFollower.text = "${detail.followers.toString()} Followers"
         binding.tvFollowing.text = "${detail.following.toString()} Following"
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
