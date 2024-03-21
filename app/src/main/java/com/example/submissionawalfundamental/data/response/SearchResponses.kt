@@ -1,6 +1,7 @@
 package com.example.submissionawalfundamental.data.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class SearchResponses(
 
@@ -72,4 +73,4 @@ data class ItemsItem(
 
 	@field:SerializedName("organizations_url")
 	val organizationsUrl: String
-)
+) : Serializable

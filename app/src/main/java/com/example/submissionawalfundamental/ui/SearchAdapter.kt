@@ -1,5 +1,6 @@
 package com.example.submissionawalfundamental.ui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.databinding.ItemUserBinding
 
-class SearchAdapter : ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class SearchAdapter  :
+    ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent,false )
         return MyViewHolder(binding)
@@ -17,6 +19,11 @@ class SearchAdapter : ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CA
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
+        holder.itemView.setOnClickListener{
+            val intent = Intent(holder.itemView.context, UserDetailAcitivty::class.java)
+            intent.putExtra("ITEM_DETAIL", user)
+            holder.itemView.context.startActivity(intent)
+        }
     }
     class MyViewHolder (val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: ItemsItem){
@@ -25,6 +32,9 @@ class SearchAdapter : ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CA
                 .load(user.avatarUrl)
                 .into(binding.imageProfile)
         }
+    }
+    interface OnItemClickListener {
+        fun onItemClick(item: ItemsItem)
     }
 
     companion object {
