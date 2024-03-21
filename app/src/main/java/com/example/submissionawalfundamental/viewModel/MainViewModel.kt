@@ -17,6 +17,8 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    val errorMessage: MutableLiveData<String> = MutableLiveData()
+
     init {
         findUsers("q")
     }
@@ -36,11 +38,12 @@ class MainViewModel : ViewModel() {
                         _userList.value = responseBody.items
                     }
                 } else {
+                    errorMessage.value = "User not found"
                 }
             }
             override fun onFailure(call: Call<SearchResponses>, t: Throwable) {
-                _isLoading.value = true
-
+                _isLoading.value = false
+                errorMessage.value = "Failed to fetch data: ${t.message}"
             }
         })
     }

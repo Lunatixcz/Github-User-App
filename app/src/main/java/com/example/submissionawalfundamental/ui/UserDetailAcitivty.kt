@@ -1,11 +1,12 @@
 package com.example.submissionawalfundamental.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.submissionawalfundamental.adapter.SectionsPagerAdapter
 import com.example.submissionawalfundamental.data.response.DetailUserResponse
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.databinding.ActivityUserDetailAcitivtyBinding
@@ -21,7 +22,6 @@ class UserDetailAcitivty : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailAcitivtyBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
 
         val item = intent.getSerializableExtra("ITEM_DETAIL") as? ItemsItem
@@ -45,18 +45,20 @@ class UserDetailAcitivty : AppCompatActivity() {
 
         if (item != null) {
             if (userDetailViewModel.username.value == null) {
-                userDetailViewModel.findDetail(item.login.orEmpty())
-                userDetailViewModel.setUsername(item.login)
+                userDetailViewModel.findDetail(item.login)
             }
-
             userDetailViewModel.detail.observe(this){ detail ->
                 if (detail != null) {
                     bindUser(detail)
                 }
-
+            }
+            userDetailViewModel.errorMessage.observe(this) { message ->
+                // Display the error message to the user, e.g., using a Toast or Snackbar
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         } else {
-
+            val message = "transfer error"
+            Toast.makeText(this ,message, Toast.LENGTH_SHORT).show()
         }
     }
     private fun bindUser (detail : DetailUserResponse) {

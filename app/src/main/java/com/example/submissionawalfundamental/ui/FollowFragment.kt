@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.submissionawalfundamental.adapter.SearchAdapter
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.data.retrofit.ApiConfig
 import com.example.submissionawalfundamental.databinding.FragmentFollowBinding
@@ -23,7 +25,7 @@ class FollowFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFollowBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,6 +49,12 @@ class FollowFragment : Fragment() {
                 showRecycleView(dataFetched)
             }
         }
+        followViewModel.isLoading.observe(viewLifecycleOwner){
+            showLoading(it)
+        }
+        followViewModel.errorMessage.observe(viewLifecycleOwner){ message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun showRecycleView(items: List<ItemsItem>?) {
@@ -62,5 +70,9 @@ class FollowFragment : Fragment() {
     companion object {
         const val ARG_POSITION = "position"
         const val ARG_USERNAME = "username"
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

@@ -15,6 +15,8 @@ class FollowViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    val errorMessage: MutableLiveData<String> = MutableLiveData()
+
     fun fetchData(client: Call<List<ItemsItem>>) {
         _isLoading.value = true
         client.enqueue(object : Callback<List<ItemsItem>> {
@@ -27,12 +29,13 @@ class FollowViewModel : ViewModel() {
                     val dataList = response.body()
                     _dataFetched.value = dataList
                 } else {
-                    // Handle unsuccessful response
+                    errorMessage.value = "List is empty"
                 }
             }
 
             override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
-                // Handle failure
+                _isLoading.value = false
+                errorMessage.value = "Failed to fetch data: ${t.message}"
             }
         })
     }

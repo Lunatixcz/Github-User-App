@@ -17,9 +17,7 @@ class UserDetailViewModel : ViewModel() {
     private val _username = MutableLiveData<String?>()
     val username: LiveData<String?> = _username
 
-    fun setUsername(username: String) {
-        _username.value = username
-    }
+    val errorMessage: MutableLiveData<String> = MutableLiveData()
 
     fun findDetail(username: String){
         val client = ApiConfig.getApiService().getDetailUser(username)
@@ -34,11 +32,11 @@ class UserDetailViewModel : ViewModel() {
                         _detail.value = responseBody
                     }
                 } else {
-
+                    errorMessage.value = "Detail not Available"
                 }
             }
             override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
-
+                errorMessage.value = "Failed to find detail"
             }
         })
     }

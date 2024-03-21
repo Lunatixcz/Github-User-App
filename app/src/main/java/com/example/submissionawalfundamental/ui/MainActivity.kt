@@ -2,11 +2,12 @@ package com.example.submissionawalfundamental.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.submissionawalfundamental.adapter.SearchAdapter
 import com.example.submissionawalfundamental.databinding.ActivityMainBinding
 import com.example.submissionawalfundamental.viewModel.MainViewModel
 
@@ -23,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        enableEdgeToEdge()
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvUsers.layoutManager = layoutManager
@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
+        }
+        mainViewModel.errorMessage.observe(this ){ message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 
