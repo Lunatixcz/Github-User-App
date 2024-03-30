@@ -1,4 +1,4 @@
-package com.example.submissionawalfundamental.adapter
+package com.example.submissionawalfundamental.ui.adapter
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

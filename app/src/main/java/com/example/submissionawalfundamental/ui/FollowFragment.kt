@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.submissionawalfundamental.adapter.SearchAdapter
+import com.example.submissionawalfundamental.ui.adapter.SearchAdapter
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.data.retrofit.ApiConfig
 import com.example.submissionawalfundamental.databinding.FragmentFollowBinding

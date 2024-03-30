@@ -1,15 +1,17 @@
 package com.example.submissionawalfundamental.viewModel
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.submissionawalfundamental.data.response.DetailUserResponse
 import com.example.submissionawalfundamental.data.retrofit.ApiConfig
+import com.example.submissionawalfundamental.data.repository.FavoriteRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserDetailViewModel : ViewModel() {
+class UserDetailViewModel (application: Application): ViewModel() {
 
     private val _detail = MutableLiveData<DetailUserResponse?>()
     val detail: LiveData<DetailUserResponse?> = _detail
@@ -21,6 +23,8 @@ class UserDetailViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     val errorMessage: MutableLiveData<String> = MutableLiveData()
+
+    private val mFavoriteRepository : FavoriteRepository = FavoriteRepository(application)
 
     fun findDetail(username: String){
         _isLoading.value = true
@@ -45,5 +49,9 @@ class UserDetailViewModel : ViewModel() {
                 errorMessage.value = "Failed to find detail"
             }
         })
+    }
+
+    fun checkIfFavorite (username: String): LiveData<Boolean> {
+        return mFavoriteRepository.checkIfFavorite(username)
     }
 }

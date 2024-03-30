@@ -1,4 +1,4 @@
-package com.example.submissionawalfundamental.adapter
+package com.example.submissionawalfundamental.ui.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.submissionawalfundamental.data.response.ItemsItem
 import com.example.submissionawalfundamental.databinding.ItemUserBinding
-import com.example.submissionawalfundamental.ui.UserDetailAcitivty
+import com.example.submissionawalfundamental.ui.UserDetailActivity
 
 class SearchAdapter  :
     ListAdapter<ItemsItem, SearchAdapter.MyViewHolder>(DIFF_CALLBACK) {
@@ -21,8 +21,9 @@ class SearchAdapter  :
         val user = getItem(position)
         holder.bind(user)
         holder.itemView.setOnClickListener{
-            val intent = Intent(holder.itemView.context, UserDetailAcitivty::class.java)
-            intent.putExtra("ITEM_DETAIL", user)
+            val intent = Intent(holder.itemView.context, UserDetailActivity::class.java)
+            intent.putExtra("USERNAME", user.login)
+            intent.putExtra("AVATARURL", user.avatarUrl)
             holder.itemView.context.startActivity(intent)
         }
     }
