@@ -1,6 +1,7 @@
 package com.example.submissionawalfundamental.ui
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,20 +9,36 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submissionawalfundamental.R
 import com.example.submissionawalfundamental.databinding.ActivityMainBinding
+import com.example.submissionawalfundamental.helper.SettingPreferences
+import com.example.submissionawalfundamental.helper.SettingViewModelFactory
+import com.example.submissionawalfundamental.helper.dataStore
 import com.example.submissionawalfundamental.ui.adapter.SearchAdapter
 import com.example.submissionawalfundamental.viewModel.MainViewModel
+import com.example.submissionawalfundamental.viewModel.ThemeViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var userAdapter: SearchAdapter
     private val mainViewModel by viewModels<MainViewModel>()
+    private val themeViewModel: ThemeViewModel by viewModels {
+        SettingViewModelFactory(SettingPreferences.getInstance(application.dataStore))
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.item_menu, menu)
+        val menuItem = menu.findItem(R.id.menu_setting)
+        val menuIcon: Drawable? = menuItem.icon
+        themeViewModel.getThemeSettings().observe(this) {isDarkModeActive ->
+            if (isDarkModeActive) {
+                menuIcon?.setTint(ContextCompat.getColor(this@MainActivity, R.color.white))
+            }
+        }
         return true
     }
 
@@ -38,10 +55,19 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        themeViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
 
         with(binding) {
             searchView.setupWithSearchBar(searchBar)

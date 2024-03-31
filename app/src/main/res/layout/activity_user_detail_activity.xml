@@ -36,7 +36,6 @@
         android:layout_marginTop="2dp"
         android:text="Username"
         android:textAlignment="center"
-        android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -85,8 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvFollower"
-        app:tabTextColor="@android:color/black" />
+        app:layout_constraintTop_toBottomOf="@id/tvFollower" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
